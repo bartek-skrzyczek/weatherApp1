@@ -1,6 +1,7 @@
 let appId = "9dba112118cf4676909c78c0a170e22e";
 let units = "imperial";
 let searchMethod;
+let loader =  document.getElementById("loader");
 
 function getSearchMethod(searchTerm){
     if (searchTerm.length === 5 && Number.parseInt(searchTerm) + "" === searchTerm) {
@@ -12,6 +13,8 @@ function getSearchMethod(searchTerm){
 }
 
 function searchWeather(searchTerm) {
+    
+    loader.classList.remove("hidden");
     getSearchMethod(searchTerm);
     fetch(`https:\\api.openweathermap.org/data/2.5/weather?${searchMethod}=${searchTerm}&APPID=${appId}`).then(result => {
         return result.json();
@@ -60,6 +63,7 @@ function init(resultFromServer) {
     }
 
     console.log(resultFromServer);
+    loader.classList.add("hidden");
     let weatherDescriptionHeader = document.getElementById("weatherDescriptionHeader");
     let temp = document.getElementById("temp");
     let humidity = document.getElementById("humidity");

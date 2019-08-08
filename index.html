@@ -10,10 +10,14 @@
 </head>
 
 <body>
-  <div class="search-container">
-    <input class="searchControl" type="text" placeholder="City Name or Zipcode" id="searchInput">
-    <button class="searchControl" id="searchBtn">Search</button>
-  </div>
+    <div class="search-container">
+        <input class="searchControl" type="text" placeholder="City Name or Zipcode" id="searchInput">
+        <button class="searchControl" id="searchBtn">Search</button>
+        
+      </div>
+  <div id="loader" class="hidden">
+      <div class="block"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+    </div>
       <div id="weatherContainer">
         <div id="weatherDescription">
           <h1 id="cityName"></h1>
@@ -29,8 +33,9 @@
           <div>
         </div>
       </div>
-
+    
   </div>
+
   <!-- end of main-container -->
 <script type="text/javascript" src="script.js"></script>
 </body>
