@@ -1,29 +1,24 @@
 let appId = "9dba112118cf4676909c78c0a170e22e";
 let units = "imperial";
-let searchMethod;
 let loader =  document.getElementById("loader");
-
-function getSearchMethod(searchTerm){
-    if (searchTerm.length === 5 && Number.parseInt(searchTerm) + "" === searchTerm) {
-        searchMethod = "zip";
-    }
-    else {
-        searchMethod = "q";
-    }
-}
 
 function searchWeather(searchTerm) {
     
     loader.classList.remove("hidden");
-    getSearchMethod(searchTerm);
-    fetch(`https:\\api.openweathermap.org/data/2.5/weather?${searchMethod}=${searchTerm}&APPID=${appId}`).then(result => {
-        return result.json();
-    }).then(result => {
-        init(result);
+    fetch(`https:\\api.openweathermap.org/data/2.5/weather?${"q"}=${searchTerm}&APPID=${appId}`).then(weatherResult => {
+        return weatherResult.json();
+    }).then(weatherResult => {
+        weatherData(weatherResult);
     })
+    fetch(`https:\\api.openweathermap.org/data/2.5/forecast?${"q"}=${searchTerm}&APPID=${appId}&units`).then(forecastResult => {
+        return forecastResult.json();
+    }).then(forecastResult => {
+        forecastData(forecastResult);
+    })
+    
 }
 
-function init(resultFromServer) {
+function weatherData(resultFromServer) {
     switch(resultFromServer.weather[0].main){
         case 'Clear':
             document.body.style.backgroundImage = 'url("clear.jpg")';
@@ -75,12 +70,45 @@ function init(resultFromServer) {
     weatherIcon.src = "http://openweathermap.org/img/wn/" + resultFromServer.weather[0].icon + "@2x.png";
     let description = resultFromServer.weather[0].description;
     weatherDescriptionHeader.innerText = resultFromServer.weather[0].description.charAt(0).toUpperCase() + description.slice(1);
-    temp.innerHTML = Math.floor(resultFromServer.main.temp) + "&#176";
+    temp.innerHTML = "Temperature: " + Math.floor(resultFromServer.main.temp) + "&#176";
     humidity.innerHTML = resultFromServer.main.humidity;
     windSpeed.innerHTML = resultFromServer.wind.speed;
+}
+
+function forecastData(forecastResult){
+    console.log(forecastResult);
+}
+
+function switchTemp(){
+// Prompting the user to enter today's Kelvin temperature
+const kelvin = prompt('What is the Kelvin temperature today?');
+
+// Celsius is 273 degrees less than Kelvin
+const celsius = kelvin - 273;
+
+// Calculating Fahrenheit temperature to the nearest integer
+let fahrenheit = Math.floor(celsius * (9/5) + 32);
+
+// Displaying the temperature using string interpolation
+console.log(`The temperature is ${fahrenheit} degrees fahrenheit.`)
 }
 
 document.getElementById('searchBtn').addEventListener('click', () => {
     let searchTerm = document.getElementById("searchInput").value;
     if(searchTerm) searchWeather(searchTerm);
 })
+
+
+window.onload = function () {
+    
+    /* event listener */
+    document.getElementsByName("cityName")[0].addEventListener('change', doThing);
+    
+    /* function */
+    function doThing(){
+       alert('Horray! Someone wrote "' + this.value + '"!');
+    }
+    
+}
+
+http://jsfiddle.net/8BM3d/
