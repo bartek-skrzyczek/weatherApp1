@@ -19,45 +19,51 @@ function searchWeather(searchTerm) {
 }
 
 function weatherData(resultFromServer) {
-    switch(resultFromServer.weather[0].main){
-        case 'Clear':
-            document.body.style.backgroundImage = 'url("clear.jpg")';
-            break;
-        
-        case 'Thunderstorm':
-            document.body.style.backgroundImage = 'url("thunderstorm.jpg")';
-            break;
-
-        case 'Drizzle':
-            document.body.style.backgroundImage = 'url("drizzle.jpg")';
-            break;
-
-        case 'Rain':
-            document.body.style.backgroundImage = 'url("rain.jpg")';
-            break;
-
-        case 'Snow':
-            document.body.style.backgroundImage = 'url("snow.jpg")';
-            break;
-
-        case 'Mist':
-            document.body.style.backgroundImage = 'url("mist.jpg")';
-            break;
-
-        case 'Smoke':
-            break;
-
-        case 'Haze':
-            break;
-
-        case 'Dust':
-            break;
-
-        default:
-            break;
+    if(resultFromServer=== undefined) {
+        console.log("eee");
     }
+        switch(resultFromServer.weather[0].main) {
+            case 'Clear':
+                document.body.style.backgroundImage = 'url("clear.jpg")';
+                break;
+            
+            case 'Thunderstorm':
+                document.body.style.backgroundImage = 'url("thunderstorm.jpg")';
+                break;
+    
+            case 'Drizzle':
+                document.body.style.backgroundImage = 'url("drizzle.jpg")';
+                break;
+    
+            case 'Rain':
+                document.body.style.backgroundImage = 'url("rain.jpg")';
+                break;
+    
+            case 'Snow':
+                document.body.style.backgroundImage = 'url("snow.jpg")';
+                break;
+    
+            case 'Mist':
+                document.body.style.backgroundImage = 'url("mist.jpg")';
+                break;
+    
+            case 'Smoke':
+                break;
+    
+            case 'Haze':
+                break;
+    
+            case 'Dust':
+                break;
+    
+            default:
+                break;
+        } 
+        console.log(resultFromServer);
+    
 
-    console.log(resultFromServer);
+
+    
     loader.classList.add("hidden");
     let weatherDescriptionHeader = document.getElementById("weatherDescriptionHeader");
     let temp = document.getElementById("temp");
@@ -73,10 +79,11 @@ function weatherData(resultFromServer) {
     temp.innerHTML = "Temperature: " + Math.floor(resultFromServer.main.temp) + "&#176";
     humidity.innerHTML = resultFromServer.main.humidity;
     windSpeed.innerHTML = resultFromServer.wind.speed;
-}
+} 
 
 function forecastData(forecastResult){
     console.log(forecastResult);
+
 }
 
 function switchTemp(){
@@ -94,21 +101,23 @@ console.log(`The temperature is ${fahrenheit} degrees fahrenheit.`)
 }
 
 document.getElementById('searchBtn').addEventListener('click', () => {
-    let searchTerm = document.getElementById("searchInput").value;
+    let searchTerm = document.getElementById("address-input").value;
     if(searchTerm) searchWeather(searchTerm);
 })
 
-
+/*
 window.onload = function () {
     
-    /* event listener */
+    /* event listener */ 
+    /*
     document.getElementsByName("cityName")[0].addEventListener('change', doThing);
     
     /* function */
+    /*
     function doThing(){
        alert('Horray! Someone wrote "' + this.value + '"!');
     }
     
 }
 
-http://jsfiddle.net/8BM3d/
+//http://jsfiddle.net/8BM3d/ */

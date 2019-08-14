@@ -1,5 +1,6 @@
 .search-container {
   position: relative;
+  display: flex;
 }
 
 .block {
