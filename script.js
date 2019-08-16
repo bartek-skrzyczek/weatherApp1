@@ -3,66 +3,74 @@ let units = "imperial";
 let loader =  document.getElementById("loader");
 
 function searchWeather(searchTerm) {
+    function handleErrors(searchTerm){
+        if(!searchTerm.ok) {
+            throw Error(searchTerm.statusText);
+        }
+        return searchTerm;
+    };
     
     loader.classList.remove("hidden");
-    fetch(`https:\\api.openweathermap.org/data/2.5/weather?${"q"}=${searchTerm}&APPID=${appId}`).then(weatherResult => {
-        return weatherResult.json();
-    }).then(weatherResult => {
-        weatherData(weatherResult);
+    fetch(`https:\\api.openweathermap.org/data/2.5/weather?${"q"}=${searchTerm}&APPID=${appId}`)
+        .then(handleErrors)
+        .then(weatherResult => {
+            return weatherResult.json();
+        }).then(weatherResult => {
+            weatherData(weatherResult)
+        });
+
+    fetch(`https:\\api.openweathermap.org/data/2.5/forecast?${"q"}=${searchTerm}&APPID=${appId}&units`)
+        //.then(handleErrors)
+        .then(handleErrors)
+        .then(forecastResult => {
+            return forecastResult.json();
+        }).then(forecastResult => {
+            forecastData(forecastResult);
     })
-    fetch(`https:\\api.openweathermap.org/data/2.5/forecast?${"q"}=${searchTerm}&APPID=${appId}&units`).then(forecastResult => {
-        return forecastResult.json();
-    }).then(forecastResult => {
-        forecastData(forecastResult);
-    })
-    
 }
 
 function weatherData(resultFromServer) {
-    if(resultFromServer=== undefined) {
-        console.log("eee");
+    if(resultFromServer === undefined) {
+        console.log("error");
     }
-        switch(resultFromServer.weather[0].main) {
-            case 'Clear':
-                document.body.style.backgroundImage = 'url("clear.jpg")';
-                break;
-            
-            case 'Thunderstorm':
-                document.body.style.backgroundImage = 'url("thunderstorm.jpg")';
-                break;
-    
-            case 'Drizzle':
-                document.body.style.backgroundImage = 'url("drizzle.jpg")';
-                break;
-    
-            case 'Rain':
-                document.body.style.backgroundImage = 'url("rain.jpg")';
-                break;
-    
-            case 'Snow':
-                document.body.style.backgroundImage = 'url("snow.jpg")';
-                break;
-    
-            case 'Mist':
-                document.body.style.backgroundImage = 'url("mist.jpg")';
-                break;
-    
-            case 'Smoke':
-                break;
-    
-            case 'Haze':
-                break;
-    
-            case 'Dust':
-                break;
-    
-            default:
-                break;
-        } 
-        console.log(resultFromServer);
-    
+    switch(resultFromServer.weather[0].main) {
+        case 'Clear':
+            document.body.style.backgroundImage = 'url("clear.jpg")';
+            break;
+        
+        case 'Thunderstorm':
+            document.body.style.backgroundImage = 'url("thunderstorm.jpg")';
+            break;
 
+        case 'Drizzle':
+            document.body.style.backgroundImage = 'url("drizzle.jpg")';
+            break;
 
+        case 'Rain':
+            document.body.style.backgroundImage = 'url("rain.jpg")';
+            break;
+
+        case 'Snow':
+            document.body.style.backgroundImage = 'url("snow.jpg")';
+            break;
+
+        case 'Mist':
+            document.body.style.backgroundImage = 'url("mist.jpg")';
+            break;
+
+        case 'Smoke':
+            break;
+
+        case 'Haze':
+            break;
+
+        case 'Dust':
+            break;
+
+        default:
+            break;
+    } 
+    console.log(resultFromServer);
     
     loader.classList.add("hidden");
     let weatherDescriptionHeader = document.getElementById("weatherDescriptionHeader");
@@ -83,7 +91,11 @@ function weatherData(resultFromServer) {
 
 function forecastData(forecastResult){
     console.log(forecastResult);
+}
 
+function displayError(errorMessage){
+    let descContainer = document.getElementById("weatherContainer");
+    descContainer.innerHTML = "There is not a city in the database";
 }
 
 function switchTemp(){
@@ -105,6 +117,24 @@ document.getElementById('searchBtn').addEventListener('click', () => {
     if(searchTerm) searchWeather(searchTerm);
 })
 
+function myFunction() {
+    let result = document.getElementById("address-input").value;
+    console.log(result);
+    let listItem = document.querySelectorAll("ap-dataset-places");
+console.log(listItem);
+listItem.forEach(function(item) {
+    item.onclick = function(e) {
+        console.log(this.innerText);
+    }
+})
+}
+
+
+
+//document.getElementById('algolia-places-listbox-0').addEventListener('click', () => {
+  //  let searchTerm = document.getElementById("address-input").value;
+   // if(searchTerm) searchWeather(searchTerm);
+//})
 /*
 window.onload = function () {
     
