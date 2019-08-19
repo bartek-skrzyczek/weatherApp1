@@ -3,36 +3,42 @@ let units = "imperial";
 let loader =  document.getElementById("loader");
 
 function searchWeather(searchTerm) {
-    function handleErrors(searchTerm){
-        if(!searchTerm.ok) {
-            throw Error(searchTerm.statusText);
-        }
-        return searchTerm;
-    };
+    function errorMessage(){
+        let error = document.getElementById("weatherDescription");
+        error.innerHTML = "Error message content";
+    }
     
     loader.classList.remove("hidden");
     fetch(`https:\\api.openweathermap.org/data/2.5/weather?${"q"}=${searchTerm}&APPID=${appId}`)
-        .then(handleErrors)
-        .then(weatherResult => {
-            return weatherResult.json();
-        }).then(weatherResult => {
-            weatherData(weatherResult)
+
+        .then(resultFromServer => {
+            if (resultFromServer.status === 404) {
+                console.log("error");
+                return resultFromServer.json()
+                
+              }
+            return resultFromServer.json();
+        })
+
+        .then(resultFromServer => {
+            weatherData(resultFromServer);
         });
 
-    fetch(`https:\\api.openweathermap.org/data/2.5/forecast?${"q"}=${searchTerm}&APPID=${appId}&units`)
-        //.then(handleErrors)
-        .then(handleErrors)
-        .then(forecastResult => {
-            return forecastResult.json();
-        }).then(forecastResult => {
-            forecastData(forecastResult);
-    })
-}
+
+
+  //  fetch(`https:\\api.openweathermap.org/data/2.5/forecast?${"q"}=${searchTerm}&APPID=${appId}&units`)
+    //    .then(handleErrors)
+      //  .then(forecastResult => {
+        //    return forecastResult.json();
+       // }).then(forecastResult => {
+         //   forecastData(forecastResult);
+   // })
+//}
+
+
 
 function weatherData(resultFromServer) {
-    if(resultFromServer === undefined) {
-        console.log("error");
-    }
+
     switch(resultFromServer.weather[0].main) {
         case 'Clear':
             document.body.style.backgroundImage = 'url("clear.jpg")';
@@ -87,7 +93,8 @@ function weatherData(resultFromServer) {
     temp.innerHTML = "Temperature: " + Math.floor(resultFromServer.main.temp) + "&#176";
     humidity.innerHTML = resultFromServer.main.humidity;
     windSpeed.innerHTML = resultFromServer.wind.speed;
-} 
+    } 
+}
 
 function forecastData(forecastResult){
     console.log(forecastResult);
@@ -121,8 +128,8 @@ function myFunction() {
     let result = document.getElementById("address-input").value;
     console.log(result);
     let listItem = document.querySelectorAll("ap-dataset-places");
-console.log(listItem);
-listItem.forEach(function(item) {
+    console.log(listItem);
+    listItem.forEach(function(item) {
     item.onclick = function(e) {
         console.log(this.innerText);
     }
@@ -135,19 +142,3 @@ listItem.forEach(function(item) {
   //  let searchTerm = document.getElementById("address-input").value;
    // if(searchTerm) searchWeather(searchTerm);
 //})
-/*
-window.onload = function () {
-    
-    /* event listener */ 
-    /*
-    document.getElementsByName("cityName")[0].addEventListener('change', doThing);
-    
-    /* function */
-    /*
-    function doThing(){
-       alert('Horray! Someone wrote "' + this.value + '"!');
-    }
-    
-}
-
-//http://jsfiddle.net/8BM3d/ */
