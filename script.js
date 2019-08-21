@@ -3,25 +3,22 @@ let units = "imperial";
 let loader =  document.getElementById("loader");
 
 function searchWeather(searchTerm) {
-    function errorMessage(){
-        let error = document.getElementById("weatherDescription");
-        error.innerHTML = "Error message content";
-    }
-    
     loader.classList.remove("hidden");
     fetch(`https:\\api.openweathermap.org/data/2.5/weather?${"q"}=${searchTerm}&APPID=${appId}`)
-
         .then(resultFromServer => {
-            if (resultFromServer.status === 404) {
-                console.log("error");
-                return resultFromServer.json()
-                
+            if (resultFromServer.status !== 200) {
+                throw new Error("Not 200 response");
               }
-            return resultFromServer.json();
+              else {
+                return resultFromServer.json();
+              }
         })
-
         .then(resultFromServer => {
-            weatherData(resultFromServer);
+            weatherData(resultFromServer)
+        })
+        .catch(function() {
+            let error = document.getElementById("weatherDescription");
+            error.innerHTML = "Error message content";
         });
 
 
