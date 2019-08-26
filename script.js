@@ -1,10 +1,22 @@
 let appId = "9dba112118cf4676909c78c0a170e22e";
 let units = "imperial";
 let loader =  document.getElementById("loader");
+//let searchMethod = searchByCity() || searchByGeo();
 
-function searchWeather(searchTerm) {
+function searchByGeo(latVal, lonVal) {
+    let method = `lat=${latVal}&lon=${lonVal}`;
+    searchWeather(method);
+};
+
+function searchByCity(searchTerm) {
+    let search = `q=${searchTerm}`;
+    console.log(search);
+    searchWeather(search);
+};
+
+function searchWeather(searchMethod) {
     loader.classList.remove("hidden");
-    fetch(`https:\\api.openweathermap.org/data/2.5/weather?${"q"}=${searchTerm}&APPID=${appId}`)
+    fetch(`https:\\api.openweathermap.org/data/2.5/weather?${searchMethod}&APPID=${appId}`)
         .then(resultFromServer => {
             if (resultFromServer.status !== 200) {
                 throw new Error("Not 200 response");
@@ -14,9 +26,11 @@ function searchWeather(searchTerm) {
               }
         })
         .then(resultFromServer => {
-            weatherData(resultFromServer)
+            weatherData(resultFromServer);
+
         })
         .catch(function() {
+            loader.classList.add("hidden");
             let error = document.getElementById("weatherDescription");
             error.innerHTML = "Error message content";
         });
@@ -83,6 +97,9 @@ function weatherData(resultFromServer) {
     let cityName = document.getElementById("cityName");
     let weatherIcon = document.getElementById("documentIconImg");
 
+    let searchTerm = document.getElementById("address-input");
+    searchTerm.value = resultFromServer.name;
+
     cityName.innerHTML = resultFromServer.name;
     weatherIcon.src = "http://openweathermap.org/img/wn/" + resultFromServer.weather[0].icon + "@2x.png";
     let description = resultFromServer.weather[0].description;
@@ -95,11 +112,6 @@ function weatherData(resultFromServer) {
 
 function forecastData(forecastResult){
     console.log(forecastResult);
-}
-
-function displayError(errorMessage){
-    let descContainer = document.getElementById("weatherContainer");
-    descContainer.innerHTML = "There is not a city in the database";
 }
 
 function switchTemp(){
@@ -118,7 +130,7 @@ console.log(`The temperature is ${fahrenheit} degrees fahrenheit.`)
 
 document.getElementById('searchBtn').addEventListener('click', () => {
     let searchTerm = document.getElementById("address-input").value;
-    if(searchTerm) searchWeather(searchTerm);
+    searchByCity(searchTerm);
 })
 
 function myFunction() {
@@ -129,13 +141,8 @@ function myFunction() {
     listItem.forEach(function(item) {
     item.onclick = function(e) {
         console.log(this.innerText);
-    }
-})
+        }
+    })
 }
 
 
-
-//document.getElementById('algolia-places-listbox-0').addEventListener('click', () => {
-  //  let searchTerm = document.getElementById("address-input").value;
-   // if(searchTerm) searchWeather(searchTerm);
-//})

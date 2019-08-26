@@ -10,51 +10,47 @@
 </head>
 
 <body>
-
-
-<div class="search-container>">
-  <div class="search-container">
-      <input type="search" type="text" id="address-input" placeholder="Type city to display weather" name="cityName"  />
-      <button class="searchControl" id="searchBtn">Search</button>
-  </div>
-  <div id="loader" class="hidden">
-    <div class="block">
-      <div class="lds-roller">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+  <div class="search-container>">
+    <div class="search-container">
+        <input type="search" type="text" id="address-input" placeholder="Type city to display weather" name="cityName"  />
+        <button class="searchControl" id="searchBtn">Search</button>
     </div>
-  </div>
-    <div id="weatherContainer">
-      <div id="weatherDescription">
-        <h1 id="cityName"></h1>
-        <div id="weatherMain">
-          <div id="temp"></div>
-          <div id="weatherDescriptionHeader"></div>
-          <div><img id="documentIconImg"></div>
+    <div id="loader" class="hidden">
+      <div class="block">
+        <div class="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
+      </div>
+    </div>
+      <div id="weatherContainer">
+        <div id="weatherDescription">
+          <h1 id="cityName"></h1>
+          <div id="weatherMain">
+            <div id="temp"></div>
+            <div id="weatherDescriptionHeader"></div>
+            <div><img id="documentIconImg"></div>
+          </div>
 
-        <hr>
-        <div id="windSpeed" class="bottomDetails"></div>
-        <div id="humidity" class="bottomDetails"></div>
-        <div>
+          <hr>
+          <div id="windSpeed" class="bottomDetails"></div>
+          <div id="humidity" class="bottomDetails"></div>
+          <div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 <script type="text/javascript" src="script.js"></script>
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/places.js@1.16.4"></script>
 <script type="text/javascript" src="algolia.js"></script>
+<script type="text/javascript" src="geolocation.js"></script>
 </body>
 
 </html>
