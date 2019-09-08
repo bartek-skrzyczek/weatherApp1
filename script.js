@@ -4,14 +4,15 @@ let loader =  document.getElementById("loader");
 //let searchMethod = searchByCity() || searchByGeo();
 
 function searchByGeo(latVal, lonVal) {
-    let method = `lat=${latVal}&lon=${lonVal}`;
-    searchWeather(method);
+    let searchMethod = `lat=${latVal}&lon=${lonVal}`;
+    searchWeather(searchMethod);
+    forecastData(searchMethod);
 };
 
 function searchByCity(searchTerm) {
-    let search = `q=${searchTerm}`;
-    console.log(search);
-    searchWeather(search);
+    let searchMethod = `q=${searchTerm}`;
+    searchWeather(searchMethod);
+    //forecastData(searchMethod);
 };
 
 function searchWeather(searchMethod) {
@@ -32,24 +33,10 @@ function searchWeather(searchMethod) {
         .catch(function() {
             loader.classList.add("hidden");
             let error = document.getElementById("weatherDescription");
-            error.innerHTML = "Error message content";
+            error.innerHTML = "Error message contenttt";
         });
 
-
-
-  //  fetch(`https:\\api.openweathermap.org/data/2.5/forecast?${"q"}=${searchTerm}&APPID=${appId}&units`)
-    //    .then(handleErrors)
-      //  .then(forecastResult => {
-        //    return forecastResult.json();
-       // }).then(forecastResult => {
-         //   forecastData(forecastResult);
-   // })
-//}
-
-
-
-function weatherData(resultFromServer) {
-
+function weatherData(resultFromServer)  {
     switch(resultFromServer.weather[0].main) {
         case 'Clear':
             document.body.style.backgroundImage = 'url("clear.jpg")';
@@ -96,13 +83,14 @@ function weatherData(resultFromServer) {
     let windSpeed = document.getElementById("windSpeed");
     let cityName = document.getElementById("cityName");
     let weatherIcon = document.getElementById("documentIconImg");
-
     let searchTerm = document.getElementById("address-input");
-    searchTerm.value = resultFromServer.name;
+    let description = resultFromServer.weather[0].description;
 
+    let event1 = document.getElementById("forecast-event-1");
+
+    searchTerm.value = resultFromServer.name;
     cityName.innerHTML = resultFromServer.name;
     weatherIcon.src = "http://openweathermap.org/img/wn/" + resultFromServer.weather[0].icon + "@2x.png";
-    let description = resultFromServer.weather[0].description;
     weatherDescriptionHeader.innerText = resultFromServer.weather[0].description.charAt(0).toUpperCase() + description.slice(1);
     temp.innerHTML = "Temperature: " + Math.floor(resultFromServer.main.temp) + "&#176";
     humidity.innerHTML = resultFromServer.main.humidity;
@@ -110,10 +98,31 @@ function weatherData(resultFromServer) {
     } 
 }
 
-function forecastData(forecastResult){
-    console.log(forecastResult);
+function forecastData(searchMethod) {
+        fetch(`https:\\api.openweathermap.org/data/2.5/forecast?${searchMethod}&APPID=${appId}&units`)
+        .then(resultFromServer => {
+            if (resultFromServer.status !== 200) {
+                throw new Error("Not 200 response");
+              }
+              else {
+                return resultFromServer.json();
+              }
+        })
+        .then(resultFromServer => {
+            console.log(resultFromServer);
+            forecastDataDisplay(resultFromServer);
+        })
+        .catch(function() {
+            loader.classList.add("hidden");
+            let error = document.getElementById("weatherDescription");
+            error.innerHTML = "Error message content";
+        });
 }
 
+function forecastDataDisplay(resultFromServer)  {
+    let eventTime = "";
+}
+    
 function switchTemp(){
 // Prompting the user to enter today's Kelvin temperature
 const kelvin = prompt('What is the Kelvin temperature today?');

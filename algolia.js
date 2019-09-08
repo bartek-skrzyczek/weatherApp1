@@ -5,6 +5,8 @@ var placesAutocomplete = places({
 });
 
 placesAutocomplete.on('change', function(e) {
+    console.log(e.suggestion.value);
     searchWeather("q=" + e.suggestion.value);
+    forecastData("q=" + e.suggestion.value);
 });
 
