@@ -119,8 +119,9 @@ function forecastData(searchMethod) {
         });
 }
 
-function forecastDataDisplay(resultFromServer)  {
-    let eventTime = "";
+function forecastDataDisplay()  {
+    let hours = el.dt_txt.split(" ")[1].split(":", 2);
+    console.log(hours);
 }
     
 function switchTemp(){
