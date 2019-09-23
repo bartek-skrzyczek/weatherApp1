@@ -86,8 +86,6 @@ function weatherData(resultFromServer)  {
     let searchTerm = document.getElementById("address-input");
     let description = resultFromServer.weather[0].description;
 
-    let event1 = document.getElementById("forecast-event-1");
-
     searchTerm.value = resultFromServer.name;
     cityName.innerHTML = resultFromServer.name;
     weatherIcon.src = "http://openweathermap.org/img/wn/" + resultFromServer.weather[0].icon + "@2x.png";
@@ -111,6 +109,12 @@ function forecastData(searchMethod) {
         .then(resultFromServer => {
             console.log(resultFromServer);
             forecastDataDisplay(resultFromServer);
+            
+            const parsedData = parse(data);
+            const dayBoxes = createDayBoxes(parsedData);
+            renderDivlist(dayBoxes, "daylist");
+            const hourBoxes = createHourBoxes(Object.values(parsedData)[0]);
+            renderDivlist(hourBoxes, "hourlist");
         })
         .catch(function() {
             loader.classList.add("hidden");
@@ -119,9 +123,16 @@ function forecastData(searchMethod) {
         });
 }
 
-function forecastDataDisplay()  {
-    let hours = el.dt_txt.split(" ")[1].split(":", 2);
-    console.log(hours);
+function forecastDataDisplay(resultFromServer)  {
+    let item = 0;
+    let element = resultFromServer.list;
+    function length(obj) {
+        return Object.keys(element).length;
+    }
+
+    //let hours = el.dt_txt.split(" ")[1].split(":", 2);
+    console.log(element);
+    console.log(dateTime);
 }
     
 function switchTemp(){
