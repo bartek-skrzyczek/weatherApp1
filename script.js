@@ -108,19 +108,28 @@ function forecastData(searchMethod) {
         })
         .then(resultFromServer => {
             console.log(resultFromServer);
-            forecastDataDisplay(resultFromServer);
-            
-            const parsedData = parse(data);
-            const dayBoxes = createDayBoxes(parsedData);
-            renderDivlist(dayBoxes, "daylist");
-            const hourBoxes = createHourBoxes(Object.values(parsedData)[0]);
-            renderDivlist(hourBoxes, "hourlist");
+            const parsedData = parse(resultFromServer);
+
         })
         .catch(function() {
             loader.classList.add("hidden");
             let error = document.getElementById("weatherDescription");
             error.innerHTML = "Error message content";
         });
+}
+
+const parse = (jsonObject) => {
+    console.log(jsonObject);
+    const parsed = jsonObject.list.reduce((currentSum, currentValue) =>{
+        console.log(currentSum);
+        console.log(currentValue);
+        const date = currentValue.dt_txt.split(" ")[0];
+            if(currentSum[date]) {
+                currentSum[date].push(currentValue);
+            } else (currentSum[date] = [currentValue])
+        return currentSum;
+    }, {})
+    return parsed;
 }
 
 function forecastDataDisplay(resultFromServer)  {
