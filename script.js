@@ -1,7 +1,6 @@
 let appId = "9dba112118cf4676909c78c0a170e22e";
 let units = "imperial";
 let loader =  document.getElementById("loader");
-//let searchMethod = searchByCity() || searchByGeo();
 
 function searchByGeo(latVal, lonVal) {
     let searchMethod = `lat=${latVal}&lon=${lonVal}`;
@@ -12,7 +11,7 @@ function searchByGeo(latVal, lonVal) {
 function searchByCity(searchTerm) {
     let searchMethod = `q=${searchTerm}`;
     searchWeather(searchMethod);
-    //forecastData(searchMethod);
+    forecastData(searchMethod);
 };
 
 function searchWeather(searchMethod) {
@@ -107,9 +106,8 @@ function forecastData(searchMethod) {
               }
         })
         .then(resultFromServer => {
-            console.log(resultFromServer);
             const parsedData = parse(resultFromServer);
-
+            const days = renderForecastDay(parsedData);
         })
         .catch(function() {
             loader.classList.add("hidden");
@@ -120,29 +118,29 @@ function forecastData(searchMethod) {
 
 const parse = (jsonObject) => {
     console.log(jsonObject);
-    const parsed = jsonObject.list.reduce((currentSum, currentValue) =>{
-        console.log(currentSum);
-        console.log(currentValue);
+    const parsed = jsonObject.list.reduce((weatherData, currentValue) => {
         const date = currentValue.dt_txt.split(" ")[0];
-            if(currentSum[date]) {
-                currentSum[date].push(currentValue);
-            } else (currentSum[date] = [currentValue])
-        return currentSum;
-    }, {})
+            if(weatherData[date]) {
+                weatherData[date].push(currentValue);
+            } else (weatherData[date] = [currentValue])
+        return weatherData;
+    })
     return parsed;
 }
 
-function forecastDataDisplay(resultFromServer)  {
-    let item = 0;
-    let element = resultFromServer.list;
-    function length(obj) {
-        return Object.keys(element).length;
+const renderForecastDay = (selectedDaysFromApi) => {
+    console.log(selectedDaysFromApi);
+
+    function getDayName(dateStr, locale) {
+    var date = new Date(dateStr);
+    return date.toLocaleDateString(locale, { weekday: 'long' });        
     }
 
-    //let hours = el.dt_txt.split(" ")[1].split(":", 2);
-    console.log(element);
-    console.log(dateTime);
+var day = getDayName(dateTime, "eng");
+    dateTime.split("-")[0];
+    console.log(day);
 }
+
     
 function switchTemp(){
 // Prompting the user to enter today's Kelvin temperature
