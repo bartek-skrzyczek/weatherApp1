@@ -106,6 +106,7 @@ function forecastData(searchMethod) {
               }
         })
         .then(resultFromServer => {
+            console.log(resultFromServer);
             const parsedData = parse(resultFromServer);
             const days = renderForecastDay(parsedData);
         })
@@ -119,7 +120,9 @@ function forecastData(searchMethod) {
 const parse = (jsonObject) => {
     console.log(jsonObject);
     const parsed = jsonObject.list.reduce((weatherData, currentValue) => {
+        //console.log(jsonObject);
         const date = currentValue.dt_txt.split(" ")[0];
+        
             if(weatherData[date]) {
                 weatherData[date].push(currentValue);
             } else (weatherData[date] = [currentValue])
@@ -129,10 +132,25 @@ const parse = (jsonObject) => {
 }
 
 const renderForecastDay = (selectedDaysFromApi) => {
+    var dateObj = new Date();
+    var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+    var date = ('0' + dateObj.getDate()).slice(-2);
+    var year = dateObj.getFullYear();
+    var shortDate = year + '/' + month + '/' + date;
+
     console.log(selectedDaysFromApi);
+
+    const daylist = Object.entries(selectedDaysFromApi).map(([key, hours], index) => {
+        console.log(key);
+        console.log(hours);
+        console.log(index);
+    });
+
+
 
     function getDayName(dateStr, locale) {
     var date = new Date(dateStr);
+    console.log(date);
     return date.toLocaleDateString(locale, { weekday: 'long' });        
     }
 
